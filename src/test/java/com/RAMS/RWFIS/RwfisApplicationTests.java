@@ -1,0 +1,13 @@
+package com.RAMS.RWFIS;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class RwfisApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
+}
