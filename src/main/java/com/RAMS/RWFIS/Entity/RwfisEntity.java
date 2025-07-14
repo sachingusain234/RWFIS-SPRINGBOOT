@@ -36,5 +36,6 @@ public class RwfisEntity {
     private String surveyDate;
     @Column(name = "Remarks")
     private String remarks;
-
+    @Column(name="isDeleted")
+    private boolean deleted ;
 }

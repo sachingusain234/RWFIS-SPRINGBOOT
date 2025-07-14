@@ -42,7 +42,7 @@ public class RwfisService {
         existing.setAltitude(newData.getAltitude());
         existing.setSurveyDate(newData.getSurveyDate());
         existing.setRemarks(newData.getRemarks());
-
+        existing.setDeleted(newData.isDeleted());
         return repository.save(existing);
     }
 
