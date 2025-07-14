@@ -62,6 +62,7 @@ public class RwfisController {
     public ResponseEntity<String> delete(@PathVariable Long id) {
         RwfisEntity curr = rwfisService.getById(id);
         curr.setDeleted(true);
+        rwfisService.create(curr);
         return ResponseEntity.ok("Resource with id " + id + " deleted successfully.");
     }
 
