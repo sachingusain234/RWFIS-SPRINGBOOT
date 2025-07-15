@@ -1,7 +1,10 @@
 package com.RAMS.RWFIS.Entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.time.LocalDate;
 
 @Entity
 @Data
@@ -33,9 +36,32 @@ public class RwfisEntity {
     @Column(name = "Altitude")
     private double altitude;
     @Column(name = "Survey Date")
-    private String surveyDate;
+    @JsonFormat(pattern = "dd-MM-yyyy")
+    private LocalDate surveyDate;
     @Column(name = "Remarks")
     private String remarks;
     @Column(name="isDeleted")
     private boolean deleted ;
+    @Column(name="created_by")
+    private Long createdBy;
+    @Column(name = "created_date")
+    @JsonFormat(pattern = "dd-MM-yyyy")
+    private LocalDate createdDate;
+    @Column(name = "lastupdated_by")
+    private Long lastupdatedBy;
+    @Column(name = "lastupdated_date")
+    @JsonFormat(pattern = "dd-MM-yyyy")
+    private LocalDate lastupdatedDate;
+    @PrePersist
+    public void prePersist() {
+        this.createdDate = LocalDate.now();
+    }
+    @PostPersist
+    public void postPersist() {
+        if (this.createdBy == null) {
+            this.createdBy = this.id;
+            // You must update the entity to save the createdBy value after ID generation
+            // because this method is called after persist but before transaction commit.
+        }
+    }
 }

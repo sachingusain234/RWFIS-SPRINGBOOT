@@ -1,5 +1,6 @@
 package com.RAMS.RWFIS.Controller;
 
+import com.RAMS.RWFIS.DTO.RwfisDTO;
 import com.RAMS.RWFIS.Entity.RwfisEntity;
 import com.RAMS.RWFIS.Service.RwfisService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,17 +18,20 @@ public class RwfisController {
     private RwfisService rwfisService;
 
     @GetMapping("")
-    public List<RwfisEntity> getAll() {
+    public List<RwfisDTO> getAll() {
         return rwfisService.getAll()
                 .stream()
                 .filter(entity -> !entity.isDeleted())
+                .map(entity -> rwfisService.mapToDTO(entity))  // convert entity to DTO here
                 .collect(Collectors.toList());
     }
+
     @GetMapping("/deleted")
-    public List<RwfisEntity> getAllDeleted() {
+    public List<RwfisDTO> getAllDeleted() {
         return rwfisService.getAll()
                 .stream()
                 .filter(entity -> entity.isDeleted())
+                .map(entity -> rwfisService.mapToDTO(entity))  // convert entity to DTO here
                 .collect(Collectors.toList());
     }
 
@@ -48,13 +52,13 @@ public class RwfisController {
     }
 
 
-    @PostMapping
-    public ResponseEntity<RwfisEntity> create(@Valid @RequestBody RwfisEntity rwfis) {
+    @PostMapping()
+    public ResponseEntity<?> create(@Valid @RequestBody RwfisEntity rwfis) {
         return ResponseEntity.ok(rwfisService.create(rwfis));
     }
-    @PutMapping("/{id}")
-    public ResponseEntity<RwfisEntity> update(@PathVariable Long id, @Valid @RequestBody RwfisEntity updated) {
-        return ResponseEntity.ok(rwfisService.update(id, updated));
+    @PutMapping("/{id}/updatedBy/{nid}")
+    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody RwfisEntity updated,@PathVariable Long nid) {
+        return ResponseEntity.ok(rwfisService.update(id, updated,nid));
     }
 
 
