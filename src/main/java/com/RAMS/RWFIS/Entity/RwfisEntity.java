@@ -52,6 +52,8 @@ public class RwfisEntity {
     @Column(name = "lastupdated_date")
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate lastupdatedDate;
+    @Column(name = "rsi_id")
+    private Long rsiId;
     @PrePersist
     public void prePersist() {
         this.createdDate = LocalDate.now();

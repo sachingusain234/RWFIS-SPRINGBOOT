@@ -1,5 +1,6 @@
 package com.RAMS.RWFIS.Controller;
 
+import com.RAMS.RWFIS.DTO.RsiDTO;
 import com.RAMS.RWFIS.DTO.RwfisDTO;
 import com.RAMS.RWFIS.Entity.RwfisEntity;
 import com.RAMS.RWFIS.Service.RwfisService;
@@ -69,5 +70,23 @@ public class RwfisController {
         rwfisService.create(curr);
         return ResponseEntity.ok("Resource with id " + id + " deleted successfully.");
     }
+    @GetMapping("/rsi-id/{id}")
+    public ResponseEntity<?> getAllRsiID(@PathVariable Long id) {
+        RwfisEntity entity = rwfisService.getByRsiId(id);
+        if (entity.isDeleted()) {
+            return ResponseEntity
+                    .status(HttpStatus.GONE)
+                    .body("The record with rsi_id " + id + " has been deleted.");
+        }
+        RsiDTO dto = rwfisService.mapToDto(entity);
+        return ResponseEntity.ok(dto);
+    }
 
+    @DeleteMapping("/rsi-id/{id}")
+    public ResponseEntity<String> deleteRsi(@PathVariable Long id) {
+        RwfisEntity curr = rwfisService.getByRsiId(id);
+        curr.setDeleted(true);
+        rwfisService.create(curr);
+        return ResponseEntity.ok("Resource with rsi_id " + id + " deleted successfully.");
+    }
 }

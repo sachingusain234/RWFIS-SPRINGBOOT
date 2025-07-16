@@ -1,5 +1,6 @@
 package com.RAMS.RWFIS.Service;
 
+import com.RAMS.RWFIS.DTO.RsiDTO;
 import com.RAMS.RWFIS.DTO.RwfisDTO;
 import com.RAMS.RWFIS.Entity.RwfisEntity;
 import com.RAMS.RWFIS.Repository.RwfisRepository;
@@ -18,6 +19,10 @@ public class RwfisService {
 
     public List<RwfisEntity> getAll() {
         return repository.findAll();
+    }
+    public RwfisEntity getByRsiId(Long id) {
+        return repository.findByRsiId(id)
+                .orElseThrow(() -> new RuntimeException("Rwfis not found with secondary ID " + id));
     }
 
     public RwfisEntity getById(Long id) {
@@ -52,10 +57,20 @@ public class RwfisService {
         dto.setRemarks(entity.getRemarks());
         return dto;
     }
-
+    public RsiDTO mapToDto(RwfisEntity entity){
+        RsiDTO dto = new RsiDTO();
+        dto.setStartChainageKm(entity.getStartChainageKm());
+        dto.setEndChainageKm(entity.getEndChainageKm());
+        dto.setCrossSectionLocation(entity.getCrossSectionLocation());
+        dto.setFeature(entity.getFeature());
+        dto.setSafetyHazard(entity.isSafetyHazard());
+        dto.setFeatureCondition(entity.getFeatureCondition());
+        dto.setInsertedBy(entity.getCreatedBy());
+        dto.setLastUpdatedDate(entity.getLastupdatedDate());
+        return dto;
+    }
     public RwfisDTO update(Long id, RwfisEntity newData,Long nid) {
         RwfisEntity existing = getById(id);
-
         existing.setStartChainageKm(newData.getStartChainageKm());
         existing.setEndChainageKm(newData.getEndChainageKm());
         existing.setCrossSectionLocation(newData.getCrossSectionLocation());
